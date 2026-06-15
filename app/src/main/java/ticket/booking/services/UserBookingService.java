@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 public class UserBookingService {
     private User user;
@@ -58,7 +57,18 @@ public class UserBookingService {
         userFetched.ifPresent(User::printTickets);
     }
 
-    public Boolean cancelBooking(String tickedId) {
-
+    public Boolean cancelBooking(String ticketId) {
+        if(ticketId == null || ticketId.isEmpty()) {
+            System.out.println("Ticket ID cannot be null or empty.");
+            return Boolean.FALSE;
+        }
+        boolean removed = user.getTicketsBooked().removeIf(ticket -> ticket.getTicketId().equals(ticketId));
+        if (removed) {
+            System.out.println("Ticket with ID " + ticketId + " has been canceled.");
+            return Boolean.TRUE;
+        }else{
+            System.out.println("No ticket found with ID " + ticketId);
+            return Boolean.FALSE;
+        }
     }
 }
